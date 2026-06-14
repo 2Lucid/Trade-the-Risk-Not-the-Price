@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trade the Risk, Not the Price — Interactive Lab</title>
+<meta name="description" content="An interactive companion to the volatility-managed portfolios research: re-run the strategy live across global markets." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <nav class="nav">
+    <div class="brand">VMP<span class="dot">.</span>lab</div>
+    <div class="nav-links">
+      <a href="#thesis">The thesis</a>
+      <a href="#lab">The Lab</a>
+      <a href="#global">Global</a>
+      <a href="#regimes">Regimes</a>
+      <a href="paper/main.pdf">Paper ↗</a>
+    </div>
+  </nav>
+
+  <div class="hero-inner">
+    <div class="tag">Volatility-Managed Portfolios · interactive companion</div>
+    <h1>Trade the Risk,<br /><span class="grad">Not the Price.</span></h1>
+    <p class="lede">
+      You can't predict whether the market rises or falls tomorrow. But you
+      <em>can</em> predict how turbulent it will be — and that is enough to earn a
+      better risk-adjusted return. Move the sliders below and re-run a real
+      buy-side strategy, live, on 26&nbsp;years of global data.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#lab">Open the Lab ↓</a>
+      <a class="btn btn-ghost" href="#thesis">See the idea</a>
+    </div>
+  </div>
+
+  <div class="kpi-band" id="kpiBand"><!-- filled by JS --></div>
+</header>
+
+<!-- ===================== THESIS / NULL RESULT ===================== -->
+<section class="section" id="thesis">
+  <div class="section-head">
+    <span class="eyebrow">The starting point</span>
+    <h2>The price is noise. The risk is not.</h2>
+    <p class="sub">
+      Out-of-sample, no model beats a simple historical average at forecasting
+      next month's <strong>return</strong> (R² is negative). The same exercise on
+      next month's <strong>volatility</strong> works strikingly well. That single
+      asymmetry is the entire strategy.
+    </p>
+  </div>
+  <div class="card chart-card"><div id="chartR2" class="plot"></div></div>
+</section>
+
+<!-- ===================== THE LAB ===================== -->
+<section class="section lab" id="lab">
+  <div class="section-head">
+    <span class="eyebrow">The Lab — live</span>
+    <h2>Run the strategy yourself.</h2>
+    <p class="sub">
+      Pick an asset, choose how you forecast risk, add a trend overlay, and set
+      the realism dials (leverage cap, trading cost). Everything recomputes in
+      your browser — no server, real math.
+    </p>
+  </div>
+
+  <div class="lab-grid">
+    <aside class="controls card">
+      <div class="ctl">
+        <label for="assetSel">Asset / market</label>
+        <select id="assetSel"></select>
+        <div class="hint" id="assetClass"></div>
+      </div>
+
+      <div class="ctl">
+        <label>Volatility forecast</label>
+        <div class="seg" id="fcSeg">
+          <button data-fc="naive" class="on">Naive (last month)</button>
+          <button data-fc="garch">GARCH(1,1)</button>
+        </div>
+        <div class="hint" id="fcHint">GARCH available for the US market.</div>
+      </div>
+
+      <div class="ctl">
+        <label>Trend overlay (time-series momentum)</label>
+        <div class="seg" id="trendSeg">
+          <button data-trend="off" class="on">Off</button>
+          <button data-trend="on">On (long / short)</button>
+        </div>
+      </div>
+
+      <div class="ctl">
+        <label>Leverage cap — <span id="capVal" class="val">2.0×</span></label>
+        <input type="range" id="capSlider" min="1" max="5" step="0.5" value="2" />
+        <div class="ticks"><span>1×</span><span>3×</span><span>5× / ∞</span></div>
+      </div>
+
+      <div class="ctl">
+        <label>Transaction cost — <span id="costVal" class="val">10 bps</span></label>
+        <input type="range" id="costSlider" min="0" max="50" step="1" value="10" />
+        <div class="ticks"><span>0</span><span>25</span><span>50 bps</span></div>
+      </div>
+
+      <button class="btn btn-ghost reset" id="resetBtn">Reset</button>
+    </aside>
+
+    <div class="lab-main">
+      <div class="kpis" id="labKpis"></div>
+      <div class="card chart-card"><div id="chartLab" class="plot tall"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GLOBAL / CROSS-ASSET ===================== -->
+<section class="section" id="global">
+  <div class="section-head">
+    <span class="eyebrow">Does it travel?</span>
+    <h2>Across the world, and across asset classes.</h2>
+    <p class="sub">
+      Volatility timing alone is mostly an equity phenomenon — honest, and exactly
+      what the academic literature finds. But adding a trend overlay and
+      <strong>diversifying</strong> across markets is where the real, durable edge
+      lives.
+    </p>
+  </div>
+  <div class="card chart-card"><div id="chartCross" class="plot"></div></div>
+
+  <div class="two-col">
+    <div class="card chart-card"><div id="chartDiv" class="plot"></div></div>
+    <div class="card table-card">
+      <h3>Diversified portfolio, vol-matched</h3>
+      <table id="cmpTable"></table>
+      <p class="foot" id="netNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REGIMES ===================== -->
+<section class="section" id="regimes">
+  <div class="section-head">
+    <span class="eyebrow">Why it works</span>
+    <h2>An algorithm rediscovered the crises — with no dates.</h2>
+    <p class="sub">
+      A Hidden Markov Model, fed only returns, splits history into calm and
+      turbulent regimes on its own. It shades the dot-com bust, 2008, COVID and
+      2022 in red — the very moments the strategy cuts risk.
+    </p>
+  </div>
+  <div class="card chart-card"><div id="chartRegime" class="plot"></div></div>
+</section>
+
+<!-- ===================== METHOD / DISCLAIMER ===================== -->
+<section class="section method">
+  <div class="section-head">
+    <span class="eyebrow">Under the hood</span>
+    <h2>How the Lab computes.</h2>
+  </div>
+  <div class="steps">
+    <div class="step card"><span class="num">1</span><h4>Forecast the risk</h4><p>Estimate next month's variance from the past (last month's realized variance, or a GARCH model). Never using future data.</p></div>
+    <div class="step card"><span class="num">2</span><h4>Size the position</h4><p>Invest inversely to forecast variance: more when calm, less when turbulent. An optional trend signal sets the direction.</p></div>
+    <div class="step card"><span class="num">3</span><h4>Match the risk</h4><p>Scale the whole thing to the same long-run volatility as buy-and-hold, so the Sharpe comparison is fair.</p></div>
+    <div class="step card"><span class="num">4</span><h4>Charge reality</h4><p>Cap the leverage and subtract a trading cost on every change in position. Then measure Sharpe, return and drawdown.</p></div>
+  </div>
+  <p class="disclaimer">
+    ⚠️ This is a research and educational tool, <strong>not investment advice</strong>.
+    A backtest is not live trading; results depend on the sample, assume
+    frictionless leverage up to the cap, and past performance does not predict
+    future results.
+  </p>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="brand">VMP<span class="dot">.</span>lab</div>
+      <p>Volatility-Managed Portfolios — a reproducible replication and extension of Moreira &amp; Muir (2017).</p>
+    </div>
+    <div class="footer-links">
+      <a href="paper/main.pdf">Research paper (PDF)</a>
+      <a href="#lab">The Lab</a>
+      <span id="footMeta"></span>
+    </div>
+  </div>
+  <div class="copy">© <span id="year"></span> Clément Bellet-Odent · Built for research &amp; education.</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

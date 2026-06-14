@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+\centering
+\caption{Diebold-Mariano tests of equal predictive accuracy (HLN small-sample correction).}
+\label{tab:dm}
+\small
+\begin{tabular}{llrrl}
+\toprule
+Comparison & Loss & DM\_stat & p\_value & better \\
+\midrule
+garch vs naive & RMSE/MSE & -1.596 & 0.112 & garch \\
+garch vs naive & QLIKE & -3.376 & 0.001 & garch \\
+har vs naive & RMSE/MSE & 0.258 & 0.797 & naive \\
+har vs naive & QLIKE & -2.209 & 0.028 & har \\
+ensemble vs naive & RMSE/MSE & -1.196 & 0.233 & ensemble \\
+ensemble vs naive & QLIKE & -3.033 & 0.003 & ensemble \\
+har vs garch & RMSE/MSE & 1.873 & 0.062 & garch \\
+har vs garch & QLIKE & 2.497 & 0.013 & garch \\
+\bottomrule
+\end{tabular}
+\end{table}

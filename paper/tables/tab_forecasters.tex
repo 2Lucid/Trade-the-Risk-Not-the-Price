@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{Managed-strategy performance by volatility forecaster (common sample, uncapped).}
+\label{tab:forecasters}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+forecaster & ann\_return & ann\_vol & sharpe & max\_drawdown & alpha\_annual & alpha\_tstat & appraisal\_ratio \\
+\midrule
+naive & 0.090 & 0.151 & 0.597 & -0.442 & 0.030 & 0.966 & 0.248 \\
+har & 0.108 & 0.151 & 0.715 & -0.355 & 0.026 & 1.263 & 0.307 \\
+garch & 0.113 & 0.151 & 0.747 & -0.327 & 0.035 & 1.561 & 0.374 \\
+ensemble & 0.111 & 0.151 & 0.735 & -0.337 & 0.031 & 1.433 & 0.348 \\
+buy\_and\_hold & 0.099 & 0.151 & 0.655 & -0.514 & 0.000 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

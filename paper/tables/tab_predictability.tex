@@ -1,0 +1,18 @@
+\begin{table}[htbp]
+\centering
+\caption{Out-of-sample $R^2$: forecasting the return vs forecasting the volatility (expanding window, vs the prevailing mean).}
+\label{tab:predictability}
+\small
+\begin{tabular}{llrrr}
+\toprule
+Target & Model & R2\_OOS & CW\_stat & CW\_pvalue \\
+\midrule
+Return & AR(1) & -0.0345 & -1.5133 & 0.9349 \\
+Return & Momentum (3m) & -0.0171 & -1.1259 & 0.8699 \\
+Return & Lagged variance & -0.0796 & -0.7453 & 0.7719 \\
+Return & Kitchen sink & -0.1216 & -1.0460 & 0.8522 \\
+Volatility (log-RV) & AR(1) log-RV & 0.2740 & -- & -- \\
+Volatility (log-RV) & HAR (1/3/12m) & 0.2810 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
