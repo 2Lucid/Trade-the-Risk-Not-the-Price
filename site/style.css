@@ -40,7 +40,9 @@ em{font-style:normal; color:var(--blue); font-weight:600}
   color:#9fb0e0; border:1px solid rgba(159,176,224,.3); padding:6px 14px; border-radius:999px; margin-bottom:26px}
 .hero h1{font-size:clamp(2.6rem,7vw,5rem); font-weight:700; letter-spacing:-1.5px}
 .grad{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
-.lede{max-width:640px; margin:24px auto 0; color:#c4cee8; font-size:1.12rem}
+.byline{margin:18px 0 0; color:#c9d4f2; font-size:1rem; letter-spacing:.01em}
+.byline strong{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:700}
+.lede{max-width:640px; margin:18px auto 0; color:#c4cee8; font-size:1.12rem}
 .hero-cta{display:flex; gap:14px; justify-content:center; margin-top:34px; flex-wrap:wrap}
 
 .btn{display:inline-block; padding:13px 26px; border-radius:999px; font-weight:600; font-size:.98rem;
